@@ -1,4 +1,4 @@
-package com.example.tongxunluf;
+package com.example.tongxunluf.utils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -41,7 +41,9 @@ public class DeviceIdUtils  {
     private static final String SP_NAME = "device_info";
     private static final String SP_KEY_DEVICE_ID = "device_id";
 
-    public static String getDeviceId(Context context) {
+    //获得IMEI
+    public static String getDeviceId() {
+        Context context = ContextUtil.getInstance();
         SharedPreferences sharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String deviceId = sharedPreferences.getString(SP_KEY_DEVICE_ID, null);
         if (!TextUtils.isEmpty(deviceId)) {

@@ -1,6 +1,7 @@
 package com.example.tongxunluf.worker;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -19,7 +20,8 @@ public class SendCallLogWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        
-        return null;
+
+        Log.i("SendMailLog", "doWork()");
+        return Result.success();
     }
 }
