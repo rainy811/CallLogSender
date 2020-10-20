@@ -11,13 +11,11 @@ import java.io.IOException;
 
 public class SalesNameUtil {
 
-    private String name;
-
     private static final String nameSpace = "http://tempuri.org/";
     private static final String Myurl = "http://49.235.3.119:80/Service.asmx";
     private static final String Mymethod2 = "IMEI";
 
-    public String getName(String imei) {
+    public static String getSalesName(String imei) {
         SoapObject soapObject2;
         soapObject2 = new SoapObject(nameSpace, Mymethod2);
         soapObject2.addProperty("imei", imei);

@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
+import com.example.tongxunluf.callLog.SalesNameUtil;
 import com.example.tongxunluf.utils.DeviceIdUtils;
 
 import org.ksoap2.SoapEnvelope;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private Button B1;
     Button B2;
     // 销售名称
+    private String imei = DeviceIdUtils.getDeviceId();
     private String salesName;
 
     // 通过函数获取手机IMEI码
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        salesName = getSalesName(IMEI);
+        salesName = SalesNameUtil.getSalesName(imei);
 
         addCallLOg();
         B1.setOnClickListener(new View.OnClickListener() {
@@ -186,31 +188,6 @@ public class MainActivity extends AppCompatActivity {
                                   }
                               }
         );
-    }
-
-    public String getSalesName(String imei) {
-        SoapObject soapObject2;
-        soapObject2 = new SoapObject(nameSpace, Mymethod2);
-        soapObject2.addProperty("imei", imei);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.bodyOut = soapObject2;
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(soapObject2);
-        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
-        httpTransportSE1.debug = true;
-        String name = "未搜索到销售名";
-        try {
-            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
-            SoapObject object = (SoapObject) envelope.bodyIn;
-            name = object.getProperty(0).toString();
-        } catch (HttpResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        return name;
     }
 
     private void addCallLOg() {  //添加通话记录
@@ -353,9 +330,6 @@ public class MainActivity extends AppCompatActivity {
             Wakeup();
             System.exit(1);
         }
-        //获得服务返回的数据,并且开始解析
-        //B2.callOnClick();
-        //System.exit(1);
     }
 
     @SuppressLint("WrongConstant")
