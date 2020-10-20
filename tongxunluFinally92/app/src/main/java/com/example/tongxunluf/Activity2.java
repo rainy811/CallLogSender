@@ -53,7 +53,6 @@ import java.util.TimerTask;
 
 
 public class Activity2 extends AppCompatActivity {
-
     private String[] FileExist;
     private String[] b2;
     private String[] permissionList = new String[]{    //申请的权限列表
@@ -107,15 +106,6 @@ public class Activity2 extends AppCompatActivity {
         B1 = (Button) findViewById(R.id.but_id);
         final EditText et = (EditText) findViewById(R.id.editText);
         et.setEnabled(false);
-      /*  T = new Timer();
-        TT = new TimerTask() {
-            @Override
-            public void run() {
-                T.cancel();
-                B1.callOnClick();
-            }
-        };*/
-       // T.schedule(TT, 1500);
         B2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -431,6 +421,7 @@ public class Activity2 extends AppCompatActivity {
         //释放
         wl.release();
     }
+    
 
     /*public void onStop() {
         super.onStop();
