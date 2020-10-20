@@ -1,4 +1,4 @@
-package com.example.tongxunluf;
+package com.example.tongxunluf.callLog;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -17,11 +17,7 @@ public class SalesNameUtil {
     private static final String Myurl = "http://49.235.3.119:80/Service.asmx";
     private static final String Mymethod2 = "IMEI";
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSalesName(String imei) {
+    public String getName(String imei) {
         SoapObject soapObject2;
         soapObject2 = new SoapObject(nameSpace, Mymethod2);
         soapObject2.addProperty("imei", imei);
@@ -38,9 +34,9 @@ public class SalesNameUtil {
             name = object.getProperty(0).toString();
         } catch (HttpResponseException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return name;
