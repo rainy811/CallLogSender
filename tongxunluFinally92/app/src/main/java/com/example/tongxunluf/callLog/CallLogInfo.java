@@ -1,6 +1,8 @@
 package com.example.tongxunluf.callLog;
 
-public class CallLogInfo {
+import java.io.Serializable;
+
+public class CallLogInfo implements Serializable {
 
     // 销售名字
     private String salesName;
@@ -12,7 +14,7 @@ public class CallLogInfo {
     private String number;
 
     // 通话记录的日期
-    private Long date;
+    private String date;
 
     // 通话时长
     private int duration;
@@ -36,11 +38,11 @@ public class CallLogInfo {
         this.number = number;
     }
 
-    public Long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -66,5 +68,17 @@ public class CallLogInfo {
 
     public void setSalesName(String salesName) {
         this.salesName = salesName;
+    }
+
+    @Override
+    public String toString() {
+        return "CallLogInfo{" +
+                "salesName='" + salesName + '\'' +
+                ", name='" + name + '\'' +
+                ", number='" + number + '\'' +
+                ", date='" + date + '\'' +
+                ", duration=" + duration +
+                ", type=" + type +
+                '}';
     }
 }

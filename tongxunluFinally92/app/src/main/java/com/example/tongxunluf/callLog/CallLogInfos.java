@@ -4,17 +4,23 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.tongxunluf.utils.ContextUtil;
 import com.example.tongxunluf.utils.DeviceIdUtils;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
-public class CallLogInfos {
+public class CallLogInfos implements Serializable {
 
 
     private List<CallLogInfo> callLogInfos;
@@ -35,28 +41,49 @@ public class CallLogInfos {
     };// 通话类型}
 
     //获取通话记录list
-    public static List<CallLogInfo>  getContentCallLogs(){
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static List<CallLogInfo>  getContentCallLogs(){
         String imei = DeviceIdUtils.getDeviceId();
-        String salesname = SalesNameUtil.getSalesName(imei);
+        String salesman = SalesNameUtil.getSalesName(imei);
         List<CallLogInfo> callLogInfoList = new ArrayList<>();
+
+        //查看获取权限
         if (ContextUtil.getInstance().checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
-        Cursor cursor = ContextUtil.getInstance().getContentResolver().query(CallLog.Calls.CONTENT_URI, // 查询通话记录的URI
-                callColumn
-                , null, null, CallLog.Calls.DEFAULT_SORT_ORDER// 按照时间逆序排列，最近打的最先显示
-        );
-        while (cursor.moveToNext()) {
-            CallLogInfo callLogInfo = new CallLogInfo();
-            callLogInfo.setSalesName(salesname);
-            callLogInfo.setName(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)));
-            callLogInfo.setNumber(cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER)));
-            callLogInfo.setDuration(cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION)));
-            callLogInfo.setDate(cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)));
-            callLogInfo.setType(cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)));
 
-            callLogInfoList.add(callLogInfo);
+        //系统方式获取通讯录储存地址
+        Cursor cursor = ContextUtil.getInstance().getContentResolver().query(CallLog.Calls.CONTENT_URI, // 查询通话记录的URI
+                callColumn, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);// 按照时间逆序排列，最近打的最先显示
+        if(cursor != null && cursor.getCount() > 0){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            while (cursor.moveToNext()){
+                CallLogInfo callLogInfo = new CallLogInfo();
+
+                // 获取单条通讯录信息
+                String name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
+                String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+                int duration = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION));
+                long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
+                int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
+
+                //24小时前的时间戳
+                long period = 24 * 60 * 60 * 1000;
+                long lastDay = System.currentTimeMillis() -  period;
+                //筛选出24小时内的通话记录，并去除未接通电话。
+                if( duration > 0 && date > lastDay){
+                    callLogInfo.setSalesName(salesman);
+                    callLogInfo.setName(name);
+                    callLogInfo.setNumber(number);
+                    callLogInfo.setDuration(duration);
+                    callLogInfo.setDate(simpleDateFormat.format(date));
+                    callLogInfo.setType(type);
+
+                    callLogInfoList.add(callLogInfo);
+                }
+            }
         }
+
         return callLogInfoList;
     }
 }

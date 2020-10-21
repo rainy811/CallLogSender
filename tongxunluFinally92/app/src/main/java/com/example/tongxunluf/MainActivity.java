@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     private int n2 = 0;
     private int fenzhong = 0;
     private int xiaoshi = 0;
+    private static final String nameSpace = "http://tempuri.org/";
+    private static final String Myurl = "http://49.235.3.119:80/Service.asmx";
+    private static final String Mymethod = "SaveFile";
+    private static final String Mymethod2 = "IMEI";
     String local_file = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT";
     File file2;
     File file;
@@ -130,56 +134,56 @@ public class MainActivity extends AppCompatActivity {
 
         addCallLOg();
         B1.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.but_id:
-                        //T.cancel();
-                        b = et.getText().toString();
-                        file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
-                        if (file2.exists()) {
-                            file2.delete();
-                        }
-                        file = new File(local_file);
-                        FileExist = file.list();
-                        if (FileExist != null) {
-                            for (int i = 0; i < FileExist.length; i++) {
-                                File file3 = new File(local_file + "/" + FileExist[i]);
-                                file3.delete();
-                            }
-                        }
-                      try {
-                          getContentCallLog();
-                      } catch (IOException e) {
-                          e.printStackTrace();
-                      } catch (NoSuchMethodException e) {
-                          e.printStackTrace();
-                      }
-                      String oo = number2 + "";
-                      if (n2 / 60 != 0) {
-                          fenzhong = n2 / 60;
-                          if (fenzhong / 60 != 0) {
-                              xiaoshi = fenzhong / 60;
-                              fenzhong = fenzhong - xiaoshi * 60;
-                              n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
-                              file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
-                          } else if (fenzhong / 60 == 0) {
-                              n2 = n2 - fenzhong * 60;
-                              file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
-                          }
-                      } else {
-                          file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
-                      }
-                      number2 = 0;
-                      new Thread() {
-                          @Override
-                          public void run() {
-                          }
-                      }.start();
-                      break;
-                  default:
-                      break;
-              }
+                                  @RequiresApi(api = Build.VERSION_CODES.M)
+                                  public void onClick(View view) {
+                                      switch (view.getId()) {
+                                          case R.id.but_id:
+                                              //T.cancel();
+                                              b = et.getText().toString();
+                                              file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
+                                              if (file2.exists()) {
+                                                  file2.delete();
+                                              }
+                                              file = new File(local_file);
+                                              FileExist = file.list();
+                                              if (FileExist != null) {
+                                                  for (int i = 0; i < FileExist.length; i++) {
+                                                      File file3 = new File(local_file + "/" + FileExist[i]);
+                                                      file3.delete();
+                                                  }
+                                              }
+                                              try {
+                                                  getContentCallLog();
+                                              } catch (IOException e) {
+                                                  e.printStackTrace();
+                                              } catch (NoSuchMethodException e) {
+                                                  e.printStackTrace();
+                                              }
+                                              String oo = number2 + "";
+                                              if (n2 / 60 != 0) {
+                                                  fenzhong = n2 / 60;
+                                                  if (fenzhong / 60 != 0) {
+                                                      xiaoshi = fenzhong / 60;
+                                                      fenzhong = fenzhong - xiaoshi * 60;
+                                                      n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
+                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                                  } else if (fenzhong / 60 == 0) {
+                                                      n2 = n2 - fenzhong * 60;
+                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                                  }
+                                              } else {
+                                                  file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
+                                              }
+                                              number2 = 0;
+                                              new Thread() {
+                                                  @Override
+                                                  public void run() {
+                                                  }
+                                              }.start();
+                                              break;
+                                          default:
+                                              break;
+                                      }
                                   }
                               }
         );
