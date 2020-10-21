@@ -3,7 +3,6 @@ package com.example.tongxunluf.callLog;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.CallLog;
 
@@ -12,27 +11,11 @@ import androidx.annotation.RequiresApi;
 import com.example.tongxunluf.utils.ContextUtil;
 import com.example.tongxunluf.utils.DeviceIdUtils;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static androidx.core.content.PermissionChecker.checkSelfPermission;
-
-public class CallLogInfos implements Serializable {
-
-
-    private List<CallLogInfo> callLogInfos;
-
-    public List<CallLogInfo> getCallLogInfos() {
-        return callLogInfos;
-    }
-
-    public void setCallLogInfos(List<CallLogInfo> callLogInfos) {
-        this.callLogInfos = callLogInfos;
-    }
-
+public class CallLogInfosUtils {
     private static String[] callColumn = {CallLog.Calls.CACHED_NAME// 通话记录的联系人
             , CallLog.Calls.NUMBER// 通话记录的电话号码
             , CallLog.Calls.DATE// 通话记录的日期
@@ -42,7 +25,7 @@ public class CallLogInfos implements Serializable {
 
     //获取通话记录list
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private static List<CallLogInfo>  getContentCallLogs(){
+    public static  List<CallLogInfo> getContentCallLogs(){
         String imei = DeviceIdUtils.getDeviceId();
         String salesman = SalesNameUtil.getSalesName(imei);
         List<CallLogInfo> callLogInfoList = new ArrayList<>();
@@ -83,7 +66,6 @@ public class CallLogInfos implements Serializable {
                 }
             }
         }
-
         return callLogInfoList;
     }
 }

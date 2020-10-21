@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
+import com.example.tongxunluf.callLog.JsonUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
 import com.example.tongxunluf.utils.DeviceIdUtils;
 
@@ -132,146 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
         salesName = SalesNameUtil.getSalesName(imei);
 
-        addCallLOg();
         B1.setOnClickListener(new View.OnClickListener() {
-                                  @RequiresApi(api = Build.VERSION_CODES.M)
-                                  public void onClick(View view) {
-                                      switch (view.getId()) {
-                                          case R.id.but_id:
-                                              //T.cancel();
-                                              b = et.getText().toString();
-                                              file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
-                                              if (file2.exists()) {
-                                                  file2.delete();
-                                              }
-                                              file = new File(local_file);
-                                              FileExist = file.list();
-                                              if (FileExist != null) {
-                                                  for (int i = 0; i < FileExist.length; i++) {
-                                                      File file3 = new File(local_file + "/" + FileExist[i]);
-                                                      file3.delete();
-                                                  }
-                                              }
-                                              try {
-                                                  getContentCallLog();
-                                              } catch (IOException e) {
-                                                  e.printStackTrace();
-                                              } catch (NoSuchMethodException e) {
-                                                  e.printStackTrace();
-                                              }
-                                              String oo = number2 + "";
-                                              if (n2 / 60 != 0) {
-                                                  fenzhong = n2 / 60;
-                                                  if (fenzhong / 60 != 0) {
-                                                      xiaoshi = fenzhong / 60;
-                                                      fenzhong = fenzhong - xiaoshi * 60;
-                                                      n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
-                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
-                                                  } else if (fenzhong / 60 == 0) {
-                                                      n2 = n2 - fenzhong * 60;
-                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
-                                                  }
-                                              } else {
-                                                  file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesName + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
-                                              }
-                                              number2 = 0;
-                                              new Thread() {
-                                                  @Override
-                                                  public void run() {
-                                                  }
-                                              }.start();
-                                              break;
-                                          default:
-                                              break;
-                                      }
-                                  }
-                              }
-        );
-    }
-
-    private void addCallLOg() {  //添加通话记录
-        ContentValues values = new ContentValues();
-        values.clear();
-        values.put(CallLog.Calls.CACHED_NAME, "lum");
-        values.put(CallLog.Calls.NUMBER, 123456789);
-        values.put(CallLog.Calls.TYPE, "1");
-        values.put(CallLog.Calls.NEW, "0");// 0已看1未看 ,由于没有获取默认全为已读
-        if (checkSelfPermission(Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        getContentResolver().insert(CallLog.Calls.CONTENT_URI, values);
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void getContentCallLog() throws IOException, NoSuchMethodException {
-        if (checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Cursor cursor = getContentResolver().query(callUri, // 查询通话记录的URI
-                columns
-                , null, null, CallLog.Calls.DEFAULT_SORT_ORDER// 按照时间逆序排列，最近打的最先显示
-        );
-
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));  //姓名
-            String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));  //号码
-            long dateLong = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)); //获取通话日期
-            String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(dateLong));
-            int duration = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION));//获取通话时长，值为多少秒
-            int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)); //获取通话类型：1.呼入2.呼出3.未接
-            String a = "0";
-            if (type == 1) {
-                a = "呼入";
-            } else if (type == 2) {
-                a = "呼出";
+            public void onClick(View view) {
+                JsonUtils.getJson();
             }
-
-            SimpleDateFormat time2 = new SimpleDateFormat("yyyy/MM/dd");
-            String c = time2.format(new Date());
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            TelephonyManager mT = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-            phoneNumber = mT.getLine1Number();
-            if (!file2.exists()) {
-                file.createNewFile();
-                file2.createNewFile();
-            }
-            b = b.replace("/", "-");
-            ;
-            b2 = b.split("-");
-            if (b2[1].contains("0") == false) {
-                b2[1] = "0" + b2[1];
-            }
-            if (b2[2].contains("0") == false) {
-                b2[2] = "0" + b2[2];
-            }
-            n1++;
-            if (date.contains(b)) {
-                number1 = number1 + 1;
-                n1 = number1;
-                if (a != "0") {
-                    if (duration != 0) {
-                        number2 = number2 + 1;
-                        String d = "通话日期: " + date + ","//"\n"
-                                + "姓名: " + name + ","//"\n"
-                                + "电话号码: " + number + ","//"\n"
-                                + "通话时长: " + duration + "s" + ","//"\n"
-                                + "通话类型: " + a + "\n";
-                        FileOutputStream wow = new FileOutputStream(file2, true);
-                        wow.write(d.getBytes());
-                        wow.close();
-                        wow.flush();
-                        n2 = n2 + duration;
-                    }
-                }
-            }
-            if (number1 != 0) {
-                if (n1 != number1) {
-                    break;
-                }
-            }
-        }
+        });
     }
 }
