@@ -16,6 +16,7 @@ public class SalesNameUtil {
     private static final String Mymethod2 = "IMEI";
 
     public static String getSalesName(String imei) {
+        // TODO: 2020/10/21 使用SharedPreferences，添加文本框，在第一次使用软件时保存销售名称。
         return imei;
 //        SoapObject soapObject2;
 //        soapObject2 = new SoapObject(nameSpace, Mymethod2);
