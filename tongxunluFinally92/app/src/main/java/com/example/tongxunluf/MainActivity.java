@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,5 +70,25 @@ public class MainActivity extends AppCompatActivity {
         upload = (Button) findViewById(R.id.but_id);
         saveName = (Button) findViewById(R.id.saveName);
 
+        //保存姓名
+        saveName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(editText.getText().length() == 0){
+                    Toast.makeText(MainActivity.this, "未能正确填写", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    SalesNameUtil.saveSalesName(editText.getText().toString());
+                    saveName.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 通过邮件发送通话记录
+            }
+        });
     }
 }
