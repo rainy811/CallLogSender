@@ -33,7 +33,6 @@ public class CallLogInfosUtils {
         if (ContextUtil.getInstance().checkSelfPermission(Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
-
         //系统方式获取通讯录储存地址
         Cursor cursor = ContextUtil.getInstance().getContentResolver().query(CallLog.Calls.CONTENT_URI, // 查询通话记录的URI
                 callColumn, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);// 按照时间逆序排列，最近打的最先显示

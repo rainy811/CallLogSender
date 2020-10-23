@@ -32,6 +32,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.tongxunluf.callLog.JsonUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
+import com.example.tongxunluf.mail.SendMailUtil;
 import com.example.tongxunluf.utils.DeviceIdUtils;
 
 import org.ksoap2.SoapEnvelope;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     SalesNameUtil.saveSalesName(editText.getText().toString());
                     saveName.setVisibility(View.INVISIBLE);
+                    editText.setEnabled(false);
+                    editText.setFocusable(false);
+                    editText.setFocusableInTouchMode(false);
                 }
             }
         });
@@ -88,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 通过邮件发送通话记录
+                String content =  JsonUtils.getJson()+"";
+                SendMailUtil.send("henryren@keyence.com.cn",editText.getText().toString(),content);
             }
         });
     }
