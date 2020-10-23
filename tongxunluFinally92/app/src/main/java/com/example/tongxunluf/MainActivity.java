@@ -56,87 +56,18 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
-    private String[] FileExist;
-    private String[] b2;
-    private String[] permissionList = new String[]{    //申请的权限列表
-            Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.WRITE_CALL_LOG,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.PROCESS_OUTGOING_CALLS,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.MODIFY_PHONE_STATE,
-    };
-    private Uri callUri = CallLog.Calls.CONTENT_URI;
-    private String[] columns = {CallLog.Calls.CACHED_NAME// 通话记录的联系人
-            , CallLog.Calls.NUMBER// 通话记录的电话号码
-            , CallLog.Calls.DATE// 通话记录的日期
-            , CallLog.Calls.DURATION// 通话时长
-            , CallLog.Calls.TYPE};// 通话类型}
-    private String b;
-    private int number1 = 0;
-    private int number2 = 0;
-    private String phoneNumber;
-    private int n1 = 0;
-    private int n2 = 0;
-    private int fenzhong = 0;
-    private int xiaoshi = 0;
-    private static final String nameSpace = "http://tempuri.org/";
-    private static final String Myurl = "http://49.235.3.119:80/Service.asmx";
-    private static final String Mymethod = "SaveFile";
-    private static final String Mymethod2 = "IMEI";
-    String local_file = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT";
-    File file2;
-    File file;
-    private Timer T;
-    private TimerTask TT;
-    private Button B1;
-    Button B2;
-    // 销售名称
-    private String imei = DeviceIdUtils.getDeviceId();
-    private String salesName;
 
-    // 通过函数获取手机IMEI码
-    private static final String IMEI = DeviceIdUtils.getDeviceId();
-
+    private EditText editText ;
+    private Button upload;
+    private Button saveName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2);
-        ActivityCompat.requestPermissions(this, permissionList, 100);
 
-        B2 = (Button) findViewById(R.id.B2);
-        B1 = (Button) findViewById(R.id.but_id);
-        final EditText et = (EditText) findViewById(R.id.editText);
-        et.setEnabled(false);
-        B2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                et.setEnabled(true);
-       //         T.cancel();
-            }
-        });
-        SimpleDateFormat time = new SimpleDateFormat("yyyy/MM/dd");
-        et.setText(time.format(new Date()));
-        et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {//获得焦点
-                    // T.cancel();
-                }
-            }
-        });
+        editText = (EditText) findViewById(R.id.salesmanBox);
+        upload = (Button) findViewById(R.id.but_id);
+        saveName = (Button) findViewById(R.id.saveName);
 
-        salesName = SalesNameUtil.getSalesName(imei);
-
-        B1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                JsonUtils.getJson();
-            }
-        });
     }
 }

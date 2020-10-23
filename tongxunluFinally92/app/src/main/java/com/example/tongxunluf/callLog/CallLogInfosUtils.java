@@ -26,8 +26,7 @@ public class CallLogInfosUtils {
     //获取通话记录list
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static  List<CallLogInfo> getContentCallLogs(){
-        String imei = DeviceIdUtils.getDeviceId();
-        String salesman = SalesNameUtil.getSalesName(imei);
+        String salesman = SalesNameUtil.getSalesName();
         List<CallLogInfo> callLogInfoList = new ArrayList<>();
 
         //查看获取权限

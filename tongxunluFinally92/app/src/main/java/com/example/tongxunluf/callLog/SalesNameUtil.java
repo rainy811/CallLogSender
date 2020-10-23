@@ -1,44 +1,36 @@
 package com.example.tongxunluf.callLog;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpResponseException;
-import org.ksoap2.transport.HttpTransportSE;
-import org.xmlpull.v1.XmlPullParserException;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
 
-import java.io.IOException;
+import com.example.tongxunluf.utils.ContextUtil;
 
 public class SalesNameUtil {
 
-    private static final String nameSpace = "http://tempuri.org/";
-    private static final String Myurl = "http://49.235.3.119:80/Service.asmx";
-    private static final String Mymethod2 = "IMEI";
+    private static final String SP_SALESMAN_INFO = "salesman_info";
+    private static final String SP_SALESMAN = "salesman";
 
-    public static String getSalesName(String imei) {
+    //检查是否填写过销售姓名，填写过则不需要再次填写
+    public static String getSalesName() {
         // TODO: 2020/10/21 使用SharedPreferences，添加文本框，在第一次使用软件时保存销售名称。
-        return imei;
-//        SoapObject soapObject2;
-//        soapObject2 = new SoapObject(nameSpace, Mymethod2);
-//        soapObject2.addProperty("imei", imei);
-//        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-//        envelope.bodyOut = soapObject2;
-//        envelope.dotNet = true;
-//        envelope.setOutputSoapObject(soapObject2);
-//        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
-//        httpTransportSE1.debug = true;
-//        String name = "未搜索到销售名";
-//        try {
-//            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
-//            SoapObject object = (SoapObject) envelope.bodyIn;
-//            name = object.getProperty(0).toString();
-//        } catch (HttpResponseException e) {
-//            e.printStackTrace();
-//        } catch (XmlPullParserException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return name;
+        Context context = ContextUtil.getInstance();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SP_SALESMAN_INFO, Context.MODE_PRIVATE);
+        String salesman = sharedPreferences.getString(SP_SALESMAN, null);
+        if(!TextUtils.isEmpty(salesman)){
+            return salesman;
+        }
+        else {
+            salesman = "未能正确填写";
+        }
+        return salesman;
+    }
+
+    //检查是否填写过
+    public static boolean isEmpty(){
+        Context context = ContextUtil.getInstance();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SP_SALESMAN_INFO, Context.MODE_PRIVATE);
+        String salesman = sharedPreferences.getString(SP_SALESMAN, null);
+        return (!TextUtils.isEmpty(salesman));
     }
 }
