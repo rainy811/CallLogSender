@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText ;
     private Button upload;
     private Button saveName;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +94,14 @@ public class MainActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 通过邮件发送通话记录
-                String content =  JsonUtils.getJson()+"";
-                SendMailUtil.send("henryren@keyence.com.cn",editText.getText().toString(),content);
+               sendMail(view);
             }
         });
+    }
+
+    public void sendMail(View view){
+        // 通过邮件发送通话记录
+        String content =  JsonUtils.getJson()+"";
+        SendMailUtil.send("ren39376659@hotmail.com",content,editText.getText().toString());
     }
 }
