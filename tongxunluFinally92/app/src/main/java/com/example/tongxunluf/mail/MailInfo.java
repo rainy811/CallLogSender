@@ -23,7 +23,8 @@ public class MailInfo {
         p.put("mail.smtp.host", this.mailServerHost);
         p.put("mail.smtp.port", this.mailServerPort);
         p.put("mail.smtp.auth", validate ? "true" : "false");
-        p.put("mail.smtp.ssl.enable",true);
+//        p.put("mail.smtp.ssl.enable",true);
+        p.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         return p;
     }
 
