@@ -62,13 +62,26 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText ;
     private Button upload;
     private Button saveName;
-
+    private String[] permissionList = new String[]{    //申请的权限列表
+            Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.WRITE_CALL_LOG,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.PROCESS_OUTGOING_CALLS,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.MODIFY_PHONE_STATE,
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2);
+        ActivityCompat.requestPermissions(this, permissionList, 100);
 
         editText = (EditText) findViewById(R.id.salesmanBox);
         upload = (Button) findViewById(R.id.but_id);
@@ -102,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendMail(View view){
         // 通过邮件发送通话记录
         String content =  JsonUtils.getJson()+"";
-        SendMailUtil.send("ren39376659@hotmail.com",content,editText.getText().toString());
+        String title = editText.getText().toString()+"的通话记录";
+        SendMailUtil.send("henryren@keyence.com.cn",content,title);
     }
 }

@@ -18,9 +18,9 @@ public class SendMailUtil {
 
     //    //163
     private static final String HOST = "smtp.163.com";
-    private static final String PORT = "465"; //或者465  994
-    private static final String FROM_ADD = "xiaoyu_ren811@163.com";
-    private static final String FROM_PSW = "rainy39376659";
+    private static final String PORT = "994"; //或者465  994
+    private static final String FROM_ADD = "zyx15021132158@163.com";
+    private static final String FROM_PSW = "TTHSJCJAHCMCMNNB";
 
     public static void send(final File file, String toAdd,String content,String title){
         final MailInfo mailInfo = creatMail(toAdd,content,title);
@@ -35,8 +35,10 @@ public class SendMailUtil {
     }
 
     /**
-     * 添加邮箱地址，进行发送
-     * @param toAdd 邮箱
+     *
+     * @param toAdd 发送地址
+     * @param content 邮件内容
+     * @param title 邮件标题
      */
     public static void send(String toAdd,String content, String title){
         final MailInfo mailInfo = creatMail(toAdd,content,title);
@@ -70,7 +72,7 @@ public class SendMailUtil {
         mailInfo.setFromAddress(FROM_ADD); // 发送的邮箱
         mailInfo.setToAddress(toAdd); // 发到哪个邮件去
         mailInfo.setSubject(title); // 邮件主题
-        mailInfo.setContent("content"); // 邮件文本
+        mailInfo.setContent(content); // 邮件文本
         return mailInfo;
     }
 }

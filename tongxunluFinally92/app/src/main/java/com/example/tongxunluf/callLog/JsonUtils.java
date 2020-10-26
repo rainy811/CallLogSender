@@ -1,7 +1,5 @@
 package com.example.tongxunluf.callLog;
 
-import android.telecom.Call;
-
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ public class JsonUtils {
         List<CallLogInfo> callLogInfoList = new ArrayList<>();
         Gson gson =  new Gson();
         callLogInfoList = CallLogInfosUtils.getContentCallLogs();
-        String  jsonstr =  gson.toJson(callLogInfoList);
-        return jsonstr;
+        String  jsonStr =  gson.toJson(callLogInfoList);
+        return jsonStr;
     }
 }
