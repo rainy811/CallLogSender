@@ -7,9 +7,6 @@ public class CallLogInfo implements Serializable {
     // 销售名字
     private String salesName;
 
-    // 通话记录的联系人
-    private String name;
-
     // 通话记录的电话号码
     private String number;
 
@@ -25,14 +22,6 @@ public class CallLogInfo implements Serializable {
 
     // 通话类型
     private String type;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getNumber() {
         return number;
@@ -86,7 +75,6 @@ public class CallLogInfo implements Serializable {
     public String toString() {
         return "CallLogInfo{" +
                 "salesName='" + salesName + '\'' +
-                ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +

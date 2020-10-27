@@ -43,7 +43,6 @@ public class CallLogInfosUtils {
                 CallLogInfo callLogInfo = new CallLogInfo();
 
                 // 获取单条通讯录信息
-                String name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
                 String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
                 int duration = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION));
                 long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
@@ -55,7 +54,6 @@ public class CallLogInfosUtils {
                 //筛选出24小时内的通话记录，并去除未接通电话。
                 if( duration > 0 && date > lastDay){
                     callLogInfo.setSalesName(salesman);
-                    callLogInfo.setName(name);
                     callLogInfo.setNumber(number);
                     callLogInfo.setDuration(duration);
                     callLogInfo.setDate(simpleDateFormat.format(date));
