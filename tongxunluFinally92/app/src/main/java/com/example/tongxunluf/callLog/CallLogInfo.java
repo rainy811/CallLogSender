@@ -16,11 +16,15 @@ public class CallLogInfo implements Serializable {
     // 通话记录的日期
     private String date;
 
+
+    // 通话记录的时间
+    private String time;
+
     // 通话时长
     private int duration;
 
     // 通话类型
-    private int type;
+    private String type;
 
     public String getName() {
         return name;
@@ -46,6 +50,14 @@ public class CallLogInfo implements Serializable {
         this.date = date;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public int getDuration() {
         return duration;
     }
@@ -54,11 +66,11 @@ public class CallLogInfo implements Serializable {
         this.duration = duration;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -77,6 +89,7 @@ public class CallLogInfo implements Serializable {
                 ", name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
                 ", duration=" + duration +
                 ", type=" + type +
                 '}';

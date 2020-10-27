@@ -12,15 +12,14 @@
         android:layout_width="185dp"
         android:layout_height="66dp"
         android:layout_marginBottom="192dp"
-        android:text="上传通话记录"
+        android:text="手动上传通话记录"
         android:textSize="14sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.915" />
 
     <Button
         android:id="@+id/saveName"
@@ -31,39 +30,59 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toEndOf="@+id/salesmanBox"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.422" />
+        app:layout_constraintTop_toTopOf="@+id/salesmanBox"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/salsman"
-        android:layout_width="79dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="188dp"
         android:text="销售名称"
         android:textSize="24sp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp" />
 
     <EditText
         android:id="@+id/salesmanBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="输入你的姓名"
+        android:layout_width="267dp"
+        android:layout_height="41dp"
+        android:layout_below="@+id/salsman"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="15dp"
+        android:hint="输入英文名，只有一次输入机会"
         android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/salsman"
+        app:layout_constraintTop_toBottomOf="@+id/salsman"
+        tools:ignore="MissingConstraints" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.207"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.421"
+    <Button
+        android:id="@+id/work"
+        android:layout_width="108dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:text="开启定时发送"
+        app:layout_constraintEnd_toEndOf="@+id/but_id"
+        app:layout_constraintStart_toStartOf="@+id/but_id"
+        app:layout_constraintTop_toTopOf="@+id/but_id"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="323dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="12dp"
+        android:text="定时发送将每24小时发送一次。首次开启时间即为每天定时发送时间。"
+        app:layout_constraintEnd_toEndOf="@+id/work"
+        app:layout_constraintStart_toStartOf="@+id/work"
+        app:layout_constraintTop_toBottomOf="@+id/work"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

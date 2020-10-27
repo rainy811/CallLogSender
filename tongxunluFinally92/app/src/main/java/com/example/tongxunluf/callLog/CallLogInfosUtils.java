@@ -37,7 +37,8 @@ public class CallLogInfosUtils {
         Cursor cursor = ContextUtil.getInstance().getContentResolver().query(CallLog.Calls.CONTENT_URI, // 查询通话记录的URI
                 callColumn, null, null, CallLog.Calls.DEFAULT_SORT_ORDER);// 按照时间逆序排列，最近打的最先显示
         if(cursor != null && cursor.getCount() > 0){
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm:dd");
             while (cursor.moveToNext()){
                 CallLogInfo callLogInfo = new CallLogInfo();
 
@@ -58,7 +59,13 @@ public class CallLogInfosUtils {
                     callLogInfo.setNumber(number);
                     callLogInfo.setDuration(duration);
                     callLogInfo.setDate(simpleDateFormat.format(date));
-                    callLogInfo.setType(type);
+                    callLogInfo.setTime(simpleTimeFormat.format(date));
+
+                    if(type == 1){
+                        callLogInfo.setType("呼入");
+                    }else {
+                        callLogInfo.setType("呼出");
+                    }
 
                     callLogInfoList.add(callLogInfo);
                 }

@@ -7,6 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.tongxunluf.callLog.JsonUtils;
+import com.example.tongxunluf.callLog.SalesNameUtil;
+import com.example.tongxunluf.mail.SendMailUtil;
+
 public class SendCallLogWorker extends Worker {
 
     public SendCallLogWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -20,7 +24,9 @@ public class SendCallLogWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-
+        String content =  JsonUtils.getJson()+"";
+        String title = SalesNameUtil.getSalesName();
+        SendMailUtil.send("henryren@keyence.com.cn",content,title);
         Log.i("SendMailLog", "doWork()");
         return Result.success();
     }
