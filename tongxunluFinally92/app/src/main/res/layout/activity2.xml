@@ -40,12 +40,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="48dp"
         android:text="销售名称"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="31dp" />
 
     <EditText
         android:id="@+id/salesmanBox"
@@ -53,7 +53,7 @@
         android:layout_height="41dp"
         android:layout_below="@+id/salsman"
         android:layout_centerVertical="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="40dp"
         android:hint="输入英文名，只有一次输入机会"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="@+id/salsman"
@@ -62,8 +62,8 @@
 
     <Button
         android:id="@+id/work"
-        android:layout_width="108dp"
-        android:layout_height="48dp"
+        android:layout_width="210dp"
+        android:layout_height="38dp"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
         android:text="开启定时发送"

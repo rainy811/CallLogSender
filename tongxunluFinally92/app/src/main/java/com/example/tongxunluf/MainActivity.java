@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     //判断是否已经开启定时发送任务
     private static final String SP_WORK_STATUS = "WORK_STATUS";
     private static final String SP_WORK_HAS_STARTED = "WORK_STARTED";
+    private static final String WORKNAME = "SEND_MAIL";
 
     SharedPreferences sharedPreferences;
     @Override
@@ -124,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void startWork(View view){
         PeriodicWorkRequest periodicWorkRequest;
-        periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,30, TimeUnit.MINUTES).build();
-        WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork("Periode send mail", ExistingPeriodicWorkPolicy.REPLACE,periodicWorkRequest);
+        periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,15, TimeUnit.MINUTES).build();
+        WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork(WORKNAME, ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
     }
 
     public void sendMail(View view){
