@@ -23,15 +23,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation files('libs\\activation.jar')
-    implementation files('libs\\additionnal.jar')
-    implementation files('libs\\gson-2.3.1.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation files('libs\\ksoap2-android-assembly-3.6.3-jar-with-dependencies.jar')
-
-    def work_version = "2.4.0"
-    // (Java only)
-    implementation "androidx.work:work-runtime:$work_version"
 }
