@@ -1,9 +1,14 @@
 package com.example.tongxunluf;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ignoreBatteryOptimization(this);
     }
 
     private void hasName(){
@@ -135,5 +141,24 @@ public class MainActivity extends AppCompatActivity {
 //        String title = editText.getText().toString()+"的通话记录";
         String title = SalesNameUtil.getSalesName()+"的通话记录";
         SendMailUtil.send("henryren@keyence.com.cn",content,title);
+    }
+
+    //加入省电优化白名单
+    public void ignoreBatteryOptimization(Activity activity) {
+
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+
+        boolean hasIgnored = false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            hasIgnored = powerManager.isIgnoringBatteryOptimizations(activity.getPackageName());
+            //  判断当前APP是否有加入电池优化的白名单，如果没有，弹出加入电池优化的白名单的设置对话框。
+            if(!hasIgnored) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:"+activity.getPackageName()));
+                startActivity(intent);
+            }
+        }
+
+
     }
 }

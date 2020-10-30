@@ -53,17 +53,18 @@
         android:layout_height="41dp"
         android:layout_below="@+id/salsman"
         android:layout_centerVertical="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:hint="输入英文名，只有一次输入机会"
         android:inputType="textPersonName"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/salsman"
         app:layout_constraintTop_toBottomOf="@+id/salsman"
         tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/work"
-        android:layout_width="210dp"
-        android:layout_height="38dp"
+        android:layout_width="185dp"
+        android:layout_height="66dp"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
         android:text="开启定时发送"
@@ -79,7 +80,8 @@
         android:layout_gravity="center"
 
         android:layout_marginTop="12dp"
-        android:text="定时发送将每24小时发送一次。首次开启时间即为每天定时发送时间。"
+        android:text="点击开启每天17点自动发送通话记录"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/work"
         app:layout_constraintStart_toStartOf="@+id/work"
         app:layout_constraintTop_toBottomOf="@+id/work"

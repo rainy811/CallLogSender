@@ -37,10 +37,9 @@ public class SendCallLogWorker extends Worker {
     public Result doWork() {
         sharedPreferences = ContextUtil.getInstance().getSharedPreferences(FLAG,Context.MODE_PRIVATE);
         isSended = sharedPreferences.getBoolean(SP_IS_SENDED,false);
-
-        // 每天17点定时发送
-//        if (compareCurrentHour(17)){
-        if (compareCurrentMinute(45)){
+//        send();
+        // 每天17点检查是否发送
+        if (compareCurrentHour(17)){
             if(!isSended){
                 //在指定时间，且没有发送过邮件,
                 sharedPreferences.edit().putBoolean(SP_IS_SENDED,true);
