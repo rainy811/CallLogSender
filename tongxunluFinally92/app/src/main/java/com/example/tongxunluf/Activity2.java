@@ -47,11 +47,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
-
-
 public class Activity2 extends AppCompatActivity {
 
     private String[] FileExist;
@@ -80,7 +75,7 @@ public class Activity2 extends AppCompatActivity {
     private int number2 = 0;
     private String phoneNumber;
     private int n1 = 0;
-    private int n2 = 0;
+    private int durationSum = 0;
     private int fenzhong = 0;
     private int xiaoshi = 0;
     private static final String nameSpace = "http://tempuri.org/";
@@ -93,8 +88,8 @@ public class Activity2 extends AppCompatActivity {
     private Timer T;
     private TimerTask TT;
     private Button B1;
-    Button B2;
-    private String Name2;
+    private Button B2;
+    private String salesmanName;
     private Calendar calendar;
 
     @Override
@@ -129,12 +124,11 @@ public class Activity2 extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
-                    Name2 = IMEI();
+                    salesmanName = IMEI();
                 }
             }.start();
         }
-        //AlarmStop();
-        //Alarm();
+
         addCallLOg();
         B1.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -163,19 +157,19 @@ public class Activity2 extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             String oo = number2 + "";
-                            if (n2 / 60 != 0) {
-                                fenzhong = n2 / 60;
+                            if (durationSum / 60 != 0) {
+                                fenzhong = durationSum / 60;
                                 if (fenzhong / 60 != 0) {
                                     xiaoshi = fenzhong / 60;
                                     fenzhong = fenzhong - xiaoshi * 60;
-                                    n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
-                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                    durationSum = durationSum - fenzhong * 60 - xiaoshi * 60 * 60;
+                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + durationSum + "s" + ".csv"));
                                 } else if (fenzhong / 60 == 0) {
-                                    n2 = n2 - fenzhong * 60;
-                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                    durationSum = durationSum - fenzhong * 60;
+                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + durationSum + "s" + ".csv"));
                                 }
                             } else {
-                                file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
+                                file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"));
                             }
                             number2 = 0;
                             new Thread() {
@@ -251,11 +245,8 @@ public class Activity2 extends AppCompatActivity {
             String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));  //号码
             long dateLong = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)); //获取通话日期
             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(dateLong));
-            String time = new SimpleDateFormat("HH:mm").format(new Date(dateLong));
             int duration = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION));//获取通话时长，值为多少秒
             int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)); //获取通话类型：1.呼入2.呼出3.未接
-            String dayCurrent = new SimpleDateFormat("dd").format(new Date());
-            String dayRecord = new SimpleDateFormat("dd").format(new Date(dateLong));
 
             String a = "0";
             if (type == 1) {
@@ -300,7 +291,7 @@ public class Activity2 extends AppCompatActivity {
                         wow.write(d.getBytes());
                         wow.close();
                         wow.flush();
-                        n2 = n2 + duration;
+                        durationSum = durationSum + duration;
                     }
                 }
             }
@@ -421,69 +412,4 @@ public class Activity2 extends AppCompatActivity {
         //释放
         wl.release();
     }
-
-    /*public void onStop() {
-        super.onStop();
-        Button button = new Button(getApplicationContext());
-       *//* if(Build.VERSION.SDK_INT >= 23) {
-            if (Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                this.startActivity(intent);
-            }
-        }*//*
-        WindowManager wm = (WindowManager) getApplicationContext()
-                .getSystemService(Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
-
-        *//**
-         * 以下都是WindowManager.LayoutParams的相关属性 具体用途请参考SDK文档
-         *//*
-        wmParams.type = WindowManager.LayoutParams.TYPE_PHONE; // 这里是关键，你也可以试试2003
-        wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
-        *//**
-         * 这里的flags也很关键 代码实际是wmParams.flags |=FLAG_NOT_FOCUSABLE;
-         * 40的由来是wmParams的默认属性（32）+ FLAG_NOT_FOCUSABLE（8）
-         *//*
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-        wmParams.width = 1;
-        wmParams.height = 1;
-        wm.addView(button, wmParams);
-    }*/
-
-   /* public void Alarm() {
-        calendar = Calendar.getInstance();
-        ActivityCompat.requestPermissions(this, permissionList, 100);
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        //set(f, value) changes field f to value.
-       *//* calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);*//*
-        Intent intent = new Intent(Activity2.this, AlermReceiver.class);
-        intent.putExtra("music", "闹钟");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity2.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager am;
-        //获取系统进程
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        //am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        //设置周期！！
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000, pendingIntent);
-    }
-
-    public void AlarmStop() {
-        Intent intent = new Intent(Activity2.this, AlermReceiver.class);
-        intent.putExtra("music", true);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity2.this, 0, intent, 0);
-        AlarmManager am;
-        //获取系统进程
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        //cancel
-        am.cancel(pendingIntent);
-    }*/
 }

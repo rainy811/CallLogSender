@@ -15,23 +15,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-
-import com.example.tongxunluf.Activity2;
-import com.example.tongxunluf.R;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -48,7 +39,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -101,7 +91,7 @@ public class RespenseService extends Service {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
-                    Name2 = IMEI();
+                    Name2 = getNameByIMEI();
                 }
             }.start();
         }
@@ -159,7 +149,7 @@ public class RespenseService extends Service {
         T.schedule(TT,1000);
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String IMEI() {
+    public String getNameByIMEI() {
         TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         @SuppressLint("MissingPermission") String imei = manager.getImei();
         SoapObject soapObject2;
@@ -221,7 +211,7 @@ public class RespenseService extends Service {
             String dayCurrent = new SimpleDateFormat("dd").format(new Date());
             String dayRecord = new SimpleDateFormat("dd").format(new Date(dateLong));
 
-            String a = "0";
+            String a = new String();
             if (type == 1) {
                 a = "呼入";
             } else if (type == 2) {
@@ -334,27 +324,27 @@ public class RespenseService extends Service {
             NotificationChannel mChannel = new NotificationChannel("id", "通知测试", NotificationManager.IMPORTANCE_LOW);
             notificationManager.createNotificationChannel(mChannel);
             notification = new Notification.Builder(this)
-                    .setChannelId("id")
-                    .setContentTitle(title)
-                    .setContentText(text)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setContentIntent(resultPendingIntent)
-                    .setFullScreenIntent(resultPendingIntent, true)
-                    .setPriority(Notification.PRIORITY_MAX)
-                    .build();
+                .setChannelId("id")
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent(resultPendingIntent)
+                .setFullScreenIntent(resultPendingIntent, true)
+                .setPriority(Notification.PRIORITY_MAX)
+                .build();
         } else {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                    .setChannelId("id")
-                    .setContentTitle(title)
-                    .setContentText(text)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setOngoing(true)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setContentIntent(resultPendingIntent)
-                    .setFullScreenIntent(resultPendingIntent, true)
-                    .setPriority(Notification.PRIORITY_MAX);
+                .setChannelId("id")
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setOngoing(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent(resultPendingIntent)
+                .setFullScreenIntent(resultPendingIntent, true)
+                .setPriority(Notification.PRIORITY_MAX);
             notification = notificationBuilder.build();
         }
         notificationManager.notify(1, notification);//把通知显示出来
