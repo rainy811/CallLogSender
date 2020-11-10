@@ -42,10 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Activity2 extends AppCompatActivity {
 
@@ -85,12 +82,10 @@ public class Activity2 extends AppCompatActivity {
     String local_file = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT";
     File file2;
     File file;
-    private Timer T;
-    private TimerTask TT;
-    private Button B1;
-    private Button B2;
+    private Button upload;
+    private Button saveName;
     private String salesmanName;
-    private Calendar calendar;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,19 +93,19 @@ public class Activity2 extends AppCompatActivity {
         setContentView(R.layout.activity2);
         ActivityCompat.requestPermissions(this, permissionList, 100);
 
-        B2 = (Button) findViewById(R.id.B2);
-        B1 = (Button) findViewById(R.id.but_id);
-        final EditText et = (EditText) findViewById(R.id.editText);
-        et.setEnabled(false);
-        B2.setOnClickListener(new View.OnClickListener() {
+        saveName = findViewById(R.id.saveName);
+        upload = findViewById(R.id.upload);
+        editText = findViewById(R.id.editText);
+        editText.setEnabled(false);
+        saveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et.setEnabled(true);
+                editText.setEnabled(true);
             }
         });
-        SimpleDateFormat time = new SimpleDateFormat("yyyy/MM/dd");
-        et.setText(time.format(new Date()));
-        et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        SimpleDateFormat day = new SimpleDateFormat("yyyy/MM/dd");
+        editText.setText(day.format(new Date()));
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {//获得焦点
@@ -119,6 +114,7 @@ public class Activity2 extends AppCompatActivity {
             }
         });
 
+        //获取销售名字
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             new Thread() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -130,58 +126,52 @@ public class Activity2 extends AppCompatActivity {
         }
 
         addCallLOg();
-        B1.setOnClickListener(new View.OnClickListener() {
+        upload.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
                 public void onClick(View view) {
-                    switch (view.getId()) {
-                        case R.id.but_id:
-                            //T.cancel();
-                            b = et.getText().toString();
-                            file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
-                            if (file2.exists()) {
-                              file2.delete();
-                            }
-                            file = new File(local_file);
-                            FileExist = file.list();
-                            if (FileExist != null) {
-                                for (int i = 0; i < FileExist.length; i++) {
-                                    File file3 = new File(local_file + "/" + FileExist[i]);
-                                    file3.delete();
-                                }
-                            }
-                            try {
-                                getContentCallLog();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchMethodException e) {
-                                e.printStackTrace();
-                            }
-                            String oo = number2 + "";
-                            if (durationSum / 60 != 0) {
-                                fenzhong = durationSum / 60;
-                                if (fenzhong / 60 != 0) {
-                                    xiaoshi = fenzhong / 60;
-                                    fenzhong = fenzhong - xiaoshi * 60;
-                                    durationSum = durationSum - fenzhong * 60 - xiaoshi * 60 * 60;
-                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + durationSum + "s" + ".csv"));
-                                } else if (fenzhong / 60 == 0) {
-                                    durationSum = durationSum - fenzhong * 60;
-                                    file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + durationSum + "s" + ".csv"));
-                                }
-                            } else {
-                                file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"));
-                            }
-                            number2 = 0;
-                            new Thread() {
-                              @Override
-                              public void run() {
-                                shangchaun();
-                                }
-                            }.start();
-                            break;
-                        default:
-                            break;
+                    //T.cancel();
+                    b = editText.getText().toString();
+                    file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
+                    if (file2.exists()) {
+                      file2.delete();
                     }
+                    file = new File(local_file);
+                    FileExist = file.list();
+                    if (FileExist != null) {
+                        for (int i = 0; i < FileExist.length; i++) {
+                            File file3 = new File(local_file + "/" + FileExist[i]);
+                            file3.delete();
+                        }
+                    }
+                    try {
+                        getContentCallLog();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    String oo = number2 + "";
+                    if (durationSum / 60 != 0) {
+                        fenzhong = durationSum / 60;
+                        if (fenzhong / 60 != 0) {
+                            xiaoshi = fenzhong / 60;
+                            fenzhong = fenzhong - xiaoshi * 60;
+                            durationSum = durationSum - fenzhong * 60 - xiaoshi * 60 * 60;
+                            file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + durationSum + "s" + ".csv"));
+                        } else if (fenzhong / 60 == 0) {
+                            durationSum = durationSum - fenzhong * 60;
+                            file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + durationSum + "s" + ".csv"));
+                        }
+                    } else {
+                        file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"));
+                    }
+                    number2 = 0;
+                    new Thread() {
+                      @Override
+                      public void run() {
+                        shangchaun();
+                        }
+                    }.start();
                 }
             }
         );

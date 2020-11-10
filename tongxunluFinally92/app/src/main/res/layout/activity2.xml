@@ -8,7 +8,7 @@
 
 
     <Button
-        android:id="@+id/but_id"
+        android:id="@+id/upload"
         android:layout_width="185dp"
         android:layout_height="66dp"
         android:text="上传通话记录"
@@ -28,37 +28,23 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center"
-        android:hint="请输入需要上传通话记录的日期"
+        android:hint="输入英文名称"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.435" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="210dp"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:text="日期格式请按如下输入2019/01/01"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.253" />
-
     <Button
-        android:id="@+id/B2"
+        android:id="@+id/saveName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="修改日期"
-        app:layout_constraintBottom_toTopOf="@+id/but_id"
+        android:layout_marginTop="16dp"
+        android:text="保存姓名"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.516"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
