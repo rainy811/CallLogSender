@@ -23,7 +23,10 @@ public class CallLogInfosUtils {
             , CallLog.Calls.TYPE
     };// 通话类型}
 
-    //获取通话记录list
+    /**
+     * 获取通讯录信息表
+     * @return
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static  List<CallLogInfo> getContentCallLogs(){
         String salesman = SalesNameUtil.getSalesName();
@@ -70,5 +73,19 @@ public class CallLogInfosUtils {
             }
         }
         return callLogInfoList;
+    }
+
+
+    /**
+     * 获取上传服务器的格式内容
+     * @return
+     */
+    public static String getMessage(){
+        List<CallLogInfo> callLogInfoList = CallLogInfosUtils.getContentCallLogs();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (CallLogInfo callLogInfo: callLogInfoList) {
+            stringBuffer.append(callLogInfo.toString());
+        }
+        return stringBuffer.toString();
     }
 }

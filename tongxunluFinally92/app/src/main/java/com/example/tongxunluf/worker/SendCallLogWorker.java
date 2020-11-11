@@ -67,10 +67,12 @@ public class SendCallLogWorker extends Worker {
         SendMailUtil.send("henryren@keyence.com.cn",content,title);
         Log.i(TAG, "doWork()");
     }
+
     private boolean compareCurrentMinute(int minute){
         int current = Calendar.getInstance().get(Calendar.MINUTE);
         return current==minute;
     }
+
     //比较时间
     private boolean compareCurrentHour(int hour){
         int current = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);

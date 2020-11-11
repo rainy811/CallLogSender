@@ -1,6 +1,7 @@
 package com.example.tongxunluf;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,19 +25,16 @@ import androidx.work.WorkManager;
 import com.example.tongxunluf.callLog.JsonUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
 import com.example.tongxunluf.mail.SendMailUtil;
+import com.example.tongxunluf.upload.Upload;
 import com.example.tongxunluf.worker.SendCallLogWorker;
 
 import java.util.concurrent.TimeUnit;
 
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText editText ;
-    private Button upload;
     private Button saveName;
     private Button startWork;
     private TextView comment;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     //判断是否已经开启定时发送任务
     private static final String SP_WORK_STATUS = "WORK_STATUS";
     private static final String SP_WORK_HAS_STARTED = "WORK_STARTED";
-    private static final String WORKNAME = "SEND_MAIL";
+    private static final String SEND_CALL_LOG = "SEND_CALL_LOG";
 
     SharedPreferences sharedPreferences;
     @Override
@@ -68,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissionList, 100);
 
 
-        editText = (EditText) findViewById(R.id.salesmanBox);
-        upload = (Button) findViewById(R.id.but_id);
-        saveName = (Button) findViewById(R.id.saveName);
-        startWork = (Button) findViewById(R.id.work);
-        comment = (TextView) findViewById(R.id.comment);
+        editText = findViewById(R.id.salesmanBox);
+        Button upload = findViewById(R.id.but_id);
+        saveName =  findViewById(R.id.saveName);
+        startWork =  findViewById(R.id.work);
+        comment =  findViewById(R.id.comment);
 
         sharedPreferences = this.getSharedPreferences(SP_WORK_STATUS,Context.MODE_PRIVATE);
         boolean workStatus = sharedPreferences.getBoolean(SP_WORK_HAS_STARTED, false);
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               sendMail(view);
+                sendBySoap(view);
             }
         });
         startWork.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 startWork(view);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean(SP_WORK_HAS_STARTED,true);
-                editor.commit();
+                editor.apply();
                 comment.setVisibility(View.INVISIBLE);
                 startWork.setVisibility(View.INVISIBLE);
 
@@ -132,16 +130,13 @@ public class MainActivity extends AppCompatActivity {
     public void startWork(View view){
         PeriodicWorkRequest periodicWorkRequest;
         periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,15, TimeUnit.MINUTES).build();
-        WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork(WORKNAME, ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
+        WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork(SEND_CALL_LOG, ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
     }
 
-    public void sendMail(View view){
-        // 通过邮件发送通话记录
-        String content =  JsonUtils.getJson()+"";
-//        String title = editText.getText().toString()+"的通话记录";
-        String title = SalesNameUtil.getSalesName()+"的通话记录";
-        SendMailUtil.send("henryren@keyence.com.cn",content,title);
+    public void sendBySoap(View view){
+        Upload.sendBySoap();
     }
+
 
     //加入省电优化白名单
     public void ignoreBatteryOptimization(Activity activity) {
@@ -153,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             hasIgnored = powerManager.isIgnoringBatteryOptimizations(activity.getPackageName());
             //  判断当前APP是否有加入电池优化的白名单，如果没有，弹出加入电池优化的白名单的设置对话框。
             if(!hasIgnored) {
-                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                @SuppressLint("BatteryLife") Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 intent.setData(Uri.parse("package:"+activity.getPackageName()));
                 startActivity(intent);
             }

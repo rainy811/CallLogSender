@@ -13,6 +13,8 @@ public class CallLogInfo implements Serializable {
     // 通话记录的日期
     private String date;
 
+    private String name;
+
 
     // 通话记录的时间
     private String time;
@@ -71,15 +73,19 @@ public class CallLogInfo implements Serializable {
         this.salesName = salesName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     @Override
     public String toString() {
-        return "CallLogInfo{" +
-                "salesName='" + salesName + '\'' +
-                ", number='" + number + '\'' +
-                ", date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", duration=" + duration +
-                ", type=" + type +
-                '}';
+        return "通话日期: " + date +" "+ time + ","
+                + "姓名: "  + name + ","
+                + "电话号码: " + number + ","
+                + "通话时长: " + duration + "s" + ","
+                + "通话类型: " + type + "\r\n";
     }
 }
