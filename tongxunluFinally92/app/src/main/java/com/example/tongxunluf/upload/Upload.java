@@ -28,7 +28,7 @@ public class Upload {
         // + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"
         String salesman = SalesNameUtil.getSalesName();
         String message = CallLogInfosUtils.getMessage();
-        String fileName = PATH + salesman;
+        String fileName = PATH + salesman + "  通话数量：n"  + "  通话时长 n s" + ".csv";
 
         SoapObject soapObject = new SoapObject(NAMESPACE, METHOD);
         soapObject.addProperty(SB, message);
