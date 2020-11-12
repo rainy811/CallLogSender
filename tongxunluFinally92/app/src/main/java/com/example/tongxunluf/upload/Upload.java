@@ -4,7 +4,6 @@ import android.os.Environment;
 
 import com.example.tongxunluf.callLog.CallLogInfosUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
-import com.example.tongxunluf.utils.ContextUtil;
 import com.example.tongxunluf.utils.NotifyUtil;
 
 import org.ksoap2.SoapEnvelope;
