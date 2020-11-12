@@ -1,6 +1,7 @@
 package com.example.tongxunluf.upload;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.example.tongxunluf.callLog.CallLogInfosUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
@@ -46,7 +47,8 @@ public class Upload {
 
         try {
             httpTransportSE.call(NAMESPACE + METHOD, envelope);
-
+            Object object = envelope.getResponse();
+            Log.i("ConnectWebService", object.toString());
         } catch (HttpResponseException | XmlPullParserException e) {
             e.printStackTrace();
             NotifyUtil.notifi("请手动发送通话记录", "由于手机网络未开启或者其它未知原因，自动发送失败，若手动发送依旧失败，请邮件联系Tech");
