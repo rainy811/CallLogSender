@@ -177,33 +177,9 @@ public class Activity2 extends AppCompatActivity {
         );
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String IMEI() {
-        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        //@SuppressLint("MissingPermission") String imei = manager.getDeviceId();
-        @SuppressLint("MissingPermission") String imei = manager.getImei();
-        SoapObject soapObject2;
-        soapObject2 = new SoapObject(nameSpace, Mymethod2);
-        soapObject2.addProperty("imei", imei);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.bodyOut = soapObject2;
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(soapObject2);
-        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
-        httpTransportSE1.debug = true;
-        String name = "未搜索到销售名，请查看或更新IMEI表格";
-        try {
-            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
-            SoapObject object = (SoapObject) envelope.bodyIn;
-            name = object.getProperty(0).toString();
-        } catch (HttpResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        return name;
+
+        return "name";
     }
 
     private void addCallLOg() {  //添加通话记录
@@ -298,7 +274,7 @@ public class Activity2 extends AppCompatActivity {
         File file = new File(path);
         // 获取路径下的所有文件
         String[] names = file.list();
-        String filename = names[0];
+        String filename = "names[0]";
         File file2 = new File(path + filename);
         FileInputStream in = null;
         byte[] byte1 = new byte[(int) file2.length()];
@@ -312,7 +288,7 @@ public class Activity2 extends AppCompatActivity {
             e.printStackTrace();
         }
         String a = new String(byte1);
-        a = a.replace("\n", "\r\n");
+        a = "ddd";
         SoapObject soapObject;
         soapObject = new SoapObject(nameSpace, Mymethod);
         soapObject.addProperty("SB", a);
