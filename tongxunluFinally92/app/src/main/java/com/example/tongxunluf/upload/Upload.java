@@ -14,6 +14,8 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Upload {
     private static final String NAMESPACE = "http://tempuri.org/";
@@ -28,7 +30,9 @@ public class Upload {
         // + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"
         String salesman = SalesNameUtil.getSalesName();
         String message = CallLogInfosUtils.getMessage();
-        String fileName = PATH + salesman + "  通话数量：n"  + "  通话时长 n s" + ".csv";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss ");
+        String time =  simpleDateFormat.format(new Date());
+        String fileName = PATH + time + salesman + "  通话数量：n"  + "  通话时长 n s" + ".csv";
 
         SoapObject soapObject = new SoapObject(NAMESPACE, METHOD);
         soapObject.addProperty(SB, message);
