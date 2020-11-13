@@ -24,16 +24,18 @@ public class Upload {
     private static final String METHOD = "SaveFile";
     private static final String SB = "SB";
     private static final String FILENAME = "fileName";
-    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/TEXT/";
+    private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+"/TXT/";
 
     public static void upload() {
         //Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + bshift.replace("/", "-")
         // + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"
         String salesman = SalesNameUtil.getSalesName();
         String message = CallLogInfosUtils.getMessage();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd ");
         String time =  simpleDateFormat.format(new Date());
-        String fileName = PATH + time + salesman + "  通话数量：n"  + "  通话时长 n s" + ".csv";
+        int callNum = CallLogInfosUtils.getTotalNum();
+        String callDuration = CallLogInfosUtils.getTotalTime();
+        String fileName = time + salesman + "  通话数量："+ callNum + "  通话时长"+ callDuration+ ".csv";
 
         SoapObject soapObject = new SoapObject(NAMESPACE, METHOD);
         soapObject.addProperty(SB, message);
