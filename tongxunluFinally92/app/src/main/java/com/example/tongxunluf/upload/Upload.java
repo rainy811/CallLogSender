@@ -35,7 +35,7 @@ public class Upload {
         String time =  simpleDateFormat.format(new Date());
         int callNum = CallLogInfosUtils.getTotalNum();
         String callDuration = CallLogInfosUtils.getTotalTime();
-        String fileName = time + salesman + "  通话数量："+ callNum + "  通话时长"+ callDuration+ ".csv";
+        String fileName = time + " "+salesman + "  通话数量："+ callNum + "  通话时长"+ callDuration+ ".csv";
 
         SoapObject soapObject = new SoapObject(NAMESPACE, METHOD);
         soapObject.addProperty(SB, message);
