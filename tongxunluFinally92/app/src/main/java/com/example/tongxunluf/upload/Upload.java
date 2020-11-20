@@ -1,10 +1,15 @@
 package com.example.tongxunluf.upload;
 
+import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.example.tongxunluf.callLog.CallLogInfosUtils;
 import com.example.tongxunluf.callLog.SalesNameUtil;
+import com.example.tongxunluf.utils.ContextUtil;
 import com.example.tongxunluf.utils.NotifyUtil;
 
 import org.ksoap2.SoapEnvelope;
@@ -49,13 +54,16 @@ public class Upload {
 
         try {
             httpTransportSE.call(NAMESPACE + METHOD, envelope);
+            wakeup();
             Object object = envelope.getResponse();
             Log.i("ConnectWebService", object.toString());
         } catch (HttpResponseException | XmlPullParserException e) {
             e.printStackTrace();
+            wakeup();
             NotifyUtil.notifi("请手动发送通话记录", "由于手机网络未开启或者其它未知原因，自动发送失败，若手动发送依旧失败，请邮件联系Tech");
         } catch (IOException e) {
             e.printStackTrace();
+            wakeup();
             NotifyUtil.notifi("请手动发送通话记录", "由于手机网络未开启或者其它未知原因，自动发送失败，若手动发送依旧失败，请邮件联系Tech");
         }
     }
@@ -67,5 +75,20 @@ public class Upload {
                 upload();
             }
         }.start();
+    }
+    @SuppressLint("MissingPermission")
+    public static void wakeup() {
+        KeyguardManager km = (KeyguardManager) ContextUtil.getInstance().getSystemService(Context.KEYGUARD_SERVICE);
+        KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
+        //解锁
+        kl.disableKeyguard();
+        //获取电源管理器对象
+        PowerManager pm = (PowerManager)  ContextUtil.getInstance().getSystemService(Context.POWER_SERVICE);
+        //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
+        @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK, "bright");
+        //点亮屏幕
+        wl.acquire();
+        //释放
+        wl.release();
     }
 }
