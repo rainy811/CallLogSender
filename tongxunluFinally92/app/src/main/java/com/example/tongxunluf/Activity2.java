@@ -42,7 +42,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+//import android.support.v4.content.ContextCompat;
+//import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AppCompatActivity;
+
 
 public class Activity2 extends AppCompatActivity {
 
@@ -72,7 +80,7 @@ public class Activity2 extends AppCompatActivity {
     private int number2 = 0;
     private String phoneNumber;
     private int n1 = 0;
-    private int durationSum = 0;
+    private int n2 = 0;
     private int fenzhong = 0;
     private int xiaoshi = 0;
     private static final String nameSpace = "http://tempuri.org/";
@@ -82,10 +90,12 @@ public class Activity2 extends AppCompatActivity {
     String local_file = Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT";
     File file2;
     File file;
-    private Button upload;
-    private Button saveName;
-    private String salesmanName;
-    private EditText editText;
+    private Timer T;
+    private TimerTask TT;
+    private Button B1;
+    Button B2;
+    private String Name2;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,19 +103,29 @@ public class Activity2 extends AppCompatActivity {
         setContentView(R.layout.activity2);
         ActivityCompat.requestPermissions(this, permissionList, 100);
 
-        saveName = findViewById(R.id.saveName);
-        upload = findViewById(R.id.upload);
-        editText = findViewById(R.id.editText);
-        editText.setEnabled(false);
-        saveName.setOnClickListener(new View.OnClickListener() {
+        B2 = (Button) findViewById(R.id.B2);
+        B1 = (Button) findViewById(R.id.but_id);
+        final EditText et = (EditText) findViewById(R.id.editText);
+        et.setEnabled(false);
+      /*  T = new Timer();
+        TT = new TimerTask() {
+            @Override
+            public void run() {
+                T.cancel();
+                B1.callOnClick();
+            }
+        };*/
+       // T.schedule(TT, 1500);
+        B2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setEnabled(true);
+                et.setEnabled(true);
+       //         T.cancel();
             }
         });
-        SimpleDateFormat day = new SimpleDateFormat("yyyy/MM/dd");
-        editText.setText(day.format(new Date()));
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        SimpleDateFormat time = new SimpleDateFormat("yyyy/MM/dd");
+        et.setText(time.format(new Date()));
+        et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {//获得焦点
@@ -114,72 +134,102 @@ public class Activity2 extends AppCompatActivity {
             }
         });
 
-        //获取销售名字
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             new Thread() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
-                    salesmanName = IMEI();
+                    Name2 = IMEI();
                 }
             }.start();
         }
-
+        //AlarmStop();
+        //Alarm();
         addCallLOg();
-        upload.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-                public void onClick(View view) {
-                    //T.cancel();
-                    b = editText.getText().toString();
-                    file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
-                    if (file2.exists()) {
-                      file2.delete();
-                    }
-                    file = new File(local_file);
-                    FileExist = file.list();
-                    if (FileExist != null) {
-                        for (int i = 0; i < FileExist.length; i++) {
-                            File file3 = new File(local_file + "/" + FileExist[i]);
-                            file3.delete();
-                        }
-                    }
-                    try {
-                        getContentCallLog();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    }
-                    String oo = number2 + "";
-                    if (durationSum / 60 != 0) {
-                        fenzhong = durationSum / 60;
-                        if (fenzhong / 60 != 0) {
-                            xiaoshi = fenzhong / 60;
-                            fenzhong = fenzhong - xiaoshi * 60;
-                            durationSum = durationSum - fenzhong * 60 - xiaoshi * 60 * 60;
-                            file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + durationSum + "s" + ".csv"));
-                        } else if (fenzhong / 60 == 0) {
-                            durationSum = durationSum - fenzhong * 60;
-                            file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + durationSum + "s" + ".csv"));
-                        }
-                    } else {
-                        file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + salesmanName + "  通话数量：" + oo + "  通话时长" + durationSum + "s" + ".csv"));
-                    }
-                    number2 = 0;
-                    new Thread() {
-                      @Override
-                      public void run() {
-                        shangchaun();
-                        }
-                    }.start();
-                }
-            }
+        B1.setOnClickListener(new View.OnClickListener() {
+                                  @RequiresApi(api = Build.VERSION_CODES.M)
+                                  public void onClick(View view) {
+                                      switch (view.getId()) {
+                                          case R.id.but_id:
+                                              //T.cancel();
+                                              b = et.getText().toString();
+                                              file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
+                                              if (file2.exists()) {
+                                                  file2.delete();
+                                              }
+                                              file = new File(local_file);
+                                              FileExist = file.list();
+                                              if (FileExist != null) {
+                                                  for (int i = 0; i < FileExist.length; i++) {
+                                                      File file3 = new File(local_file + "/" + FileExist[i]);
+                                                      file3.delete();
+                                                  }
+                                              }
+                                              try {
+                                                  getContentCallLog();
+                                              } catch (IOException e) {
+                                                  e.printStackTrace();
+                                              } catch (NoSuchMethodException e) {
+                                                  e.printStackTrace();
+                                              }
+                                              String oo = number2 + "";
+                                              if (n2 / 60 != 0) {
+                                                  fenzhong = n2 / 60;
+                                                  if (fenzhong / 60 != 0) {
+                                                      xiaoshi = fenzhong / 60;
+                                                      fenzhong = fenzhong - xiaoshi * 60;
+                                                      n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
+                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                                  } else if (fenzhong / 60 == 0) {
+                                                      n2 = n2 - fenzhong * 60;
+                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
+                                                  }
+                                              } else {
+                                                  file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
+                                              }
+                                              number2 = 0;
+                                              new Thread() {
+                                                  @Override
+                                                  public void run() {
+                                                      shangchaun();
+                                                  }
+                                              }.start();
+                                              break;
+                                          default:
+                                              break;
+                                      }
+                                  }
+                              }
         );
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String IMEI() {
-
-        return "name";
+        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        //@SuppressLint("MissingPermission") String imei = manager.getDeviceId();
+        @SuppressLint("MissingPermission") String imei = manager.getImei();
+        SoapObject soapObject2;
+        soapObject2 = new SoapObject(nameSpace, Mymethod2);
+        soapObject2.addProperty("imei", imei);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.bodyOut = soapObject2;
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(soapObject2);
+        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
+        httpTransportSE1.debug = true;
+        String name = "未搜索到销售名，请查看或更新IMEI表格";
+        try {
+            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
+            SoapObject object = (SoapObject) envelope.bodyIn;
+            name = object.getProperty(0).toString();
+        } catch (HttpResponseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     private void addCallLOg() {  //添加通话记录
@@ -211,8 +261,11 @@ public class Activity2 extends AppCompatActivity {
             String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));  //号码
             long dateLong = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE)); //获取通话日期
             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(dateLong));
+            String time = new SimpleDateFormat("HH:mm").format(new Date(dateLong));
             int duration = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.DURATION));//获取通话时长，值为多少秒
             int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)); //获取通话类型：1.呼入2.呼出3.未接
+            String dayCurrent = new SimpleDateFormat("dd").format(new Date());
+            String dayRecord = new SimpleDateFormat("dd").format(new Date(dateLong));
 
             String a = "0";
             if (type == 1) {
@@ -257,7 +310,7 @@ public class Activity2 extends AppCompatActivity {
                         wow.write(d.getBytes());
                         wow.close();
                         wow.flush();
-                        durationSum = durationSum + duration;
+                        n2 = n2 + duration;
                     }
                 }
             }
@@ -274,7 +327,7 @@ public class Activity2 extends AppCompatActivity {
         File file = new File(path);
         // 获取路径下的所有文件
         String[] names = file.list();
-        String filename = "names[0]";
+        String filename = names[0];
         File file2 = new File(path + filename);
         FileInputStream in = null;
         byte[] byte1 = new byte[(int) file2.length()];
@@ -288,7 +341,7 @@ public class Activity2 extends AppCompatActivity {
             e.printStackTrace();
         }
         String a = new String(byte1);
-        a = "ddd";
+        a = a.replace("\n", "\r\n");
         SoapObject soapObject;
         soapObject = new SoapObject(nameSpace, Mymethod);
         soapObject.addProperty("SB", a);
@@ -378,4 +431,69 @@ public class Activity2 extends AppCompatActivity {
         //释放
         wl.release();
     }
+
+    /*public void onStop() {
+        super.onStop();
+        Button button = new Button(getApplicationContext());
+       *//* if(Build.VERSION.SDK_INT >= 23) {
+            if (Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(intent);
+            }
+        }*//*
+        WindowManager wm = (WindowManager) getApplicationContext()
+                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
+
+        *//**
+         * 以下都是WindowManager.LayoutParams的相关属性 具体用途请参考SDK文档
+         *//*
+        wmParams.type = WindowManager.LayoutParams.TYPE_PHONE; // 这里是关键，你也可以试试2003
+        wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
+        *//**
+         * 这里的flags也很关键 代码实际是wmParams.flags |=FLAG_NOT_FOCUSABLE;
+         * 40的由来是wmParams的默认属性（32）+ FLAG_NOT_FOCUSABLE（8）
+         *//*
+        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        wmParams.width = 1;
+        wmParams.height = 1;
+        wm.addView(button, wmParams);
+    }*/
+
+   /* public void Alarm() {
+        calendar = Calendar.getInstance();
+        ActivityCompat.requestPermissions(this, permissionList, 100);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        //set(f, value) changes field f to value.
+       *//* calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);*//*
+        Intent intent = new Intent(Activity2.this, AlermReceiver.class);
+        intent.putExtra("music", "闹钟");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity2.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager am;
+        //获取系统进程
+        am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        //设置周期！！
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  60 * 1000, pendingIntent);
+    }
+
+    public void AlarmStop() {
+        Intent intent = new Intent(Activity2.this, AlermReceiver.class);
+        intent.putExtra("music", true);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity2.this, 0, intent, 0);
+        AlarmManager am;
+        //获取系统进程
+        am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //cancel
+        am.cancel(pendingIntent);
+    }*/
 }

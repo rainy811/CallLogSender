@@ -15,14 +15,23 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+
+import com.example.tongxunluf.Activity2;
+import com.example.tongxunluf.R;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -39,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,7 +101,7 @@ public class RespenseService extends Service {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
-                    Name2 = getNameByIMEI();
+                    Name2 = IMEI();
                 }
             }.start();
         }
@@ -148,9 +158,32 @@ public class RespenseService extends Service {
         };
         T.schedule(TT,1000);
     }
-    public String getNameByIMEI() {
-
-        return "name";
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String IMEI() {
+        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String imei = manager.getImei();
+        SoapObject soapObject2;
+        soapObject2 = new SoapObject(nameSpace, Mymethod2);
+        soapObject2.addProperty("imei", imei);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.bodyOut = soapObject2;
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(soapObject2);
+        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
+        httpTransportSE1.debug = true;
+        String name = "未搜索到销售名，请查看或更新IMEI表格";
+        try {
+            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
+            SoapObject object = (SoapObject) envelope.bodyIn;
+            name = object.getProperty(0).toString();
+        } catch (HttpResponseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     private void addCallLOg() {  //添加通话记录
@@ -188,7 +221,7 @@ public class RespenseService extends Service {
             String dayCurrent = new SimpleDateFormat("dd").format(new Date());
             String dayRecord = new SimpleDateFormat("dd").format(new Date(dateLong));
 
-            String a = new String();
+            String a = "0";
             if (type == 1) {
                 a = "呼入";
             } else if (type == 2) {
@@ -301,27 +334,27 @@ public class RespenseService extends Service {
             NotificationChannel mChannel = new NotificationChannel("id", "通知测试", NotificationManager.IMPORTANCE_LOW);
             notificationManager.createNotificationChannel(mChannel);
             notification = new Notification.Builder(this)
-                .setChannelId("id")
-                .setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(resultPendingIntent)
-                .setFullScreenIntent(resultPendingIntent, true)
-                .setPriority(Notification.PRIORITY_MAX)
-                .build();
+                    .setChannelId("id")
+                    .setContentTitle(title)
+                    .setContentText(text)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(resultPendingIntent)
+                    .setFullScreenIntent(resultPendingIntent, true)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .build();
         } else {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setChannelId("id")
-                .setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setOngoing(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(resultPendingIntent)
-                .setFullScreenIntent(resultPendingIntent, true)
-                .setPriority(Notification.PRIORITY_MAX);
+                    .setChannelId("id")
+                    .setContentTitle(title)
+                    .setContentText(text)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setOngoing(true)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(resultPendingIntent)
+                    .setFullScreenIntent(resultPendingIntent, true)
+                    .setPriority(Notification.PRIORITY_MAX);
             notification = notificationBuilder.build();
         }
         notificationManager.notify(1, notification);//把通知显示出来
