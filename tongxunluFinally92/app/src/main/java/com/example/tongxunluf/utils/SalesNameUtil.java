@@ -1,11 +1,8 @@
-package com.example.tongxunluf.callLog;
+package com.example.tongxunluf.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.widget.Toast;
-
-import com.example.tongxunluf.utils.ContextUtil;
 
 public class SalesNameUtil {
 

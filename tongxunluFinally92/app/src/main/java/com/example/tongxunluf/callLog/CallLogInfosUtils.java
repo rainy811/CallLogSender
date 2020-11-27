@@ -2,7 +2,6 @@ package com.example.tongxunluf.callLog;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.CallLog;
@@ -10,7 +9,7 @@ import android.provider.CallLog;
 import androidx.annotation.RequiresApi;
 
 import com.example.tongxunluf.utils.ContextUtil;
-import com.example.tongxunluf.utils.DeviceIdUtils;
+import com.example.tongxunluf.utils.SalesNameUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
