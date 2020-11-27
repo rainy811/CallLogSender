@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme">
 
         <receiver
-            android:name=".PhoneReceiver"
+            android:name=".receiver.PhoneReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="1000">
@@ -43,7 +43,7 @@
            </intent-filter>
         </receiver>
 
-        <receiver android:name=".LaunchReceiver">
+        <receiver android:name=".receiver.LaunchReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>

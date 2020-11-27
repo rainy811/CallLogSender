@@ -20,10 +20,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.tongxunluf.receiver.FlyModeReceiver;
+import com.example.tongxunluf.receiver.PhoneReceiver;
 import com.example.tongxunluf.utils.SalesNameUtil;
 import com.example.tongxunluf.upload.Upload;
 import com.example.tongxunluf.worker.SendCallLogWorker;
