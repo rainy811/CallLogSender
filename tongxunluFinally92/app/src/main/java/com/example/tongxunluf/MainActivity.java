@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_CALL_LOG,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
             Manifest.permission.READ_PHONE_NUMBERS,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -129,8 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public void startWork(View view){
         PeriodicWorkRequest periodicWorkRequest;
         periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,15, TimeUnit.MINUTES).build();
-        WorkManager.getInstance(MainActivity.this).enqueueUniquePeriodicWork(SEND_CALL_LOG, ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
-
+        WorkManager.getInstance(MainActivity.this).enqueue(periodicWorkRequest);
     }
 
     public void sendBySoap(View view){
