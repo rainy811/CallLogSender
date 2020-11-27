@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity2);
         ActivityCompat.requestPermissions(this, permissionList, 100);
 
+        FlyModeReceiver flyModeReceiver = new FlyModeReceiver();
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        registerReceiver(flyModeReceiver,intentFilter);
+
+        PhoneReceiver phoneReceiver = new PhoneReceiver();
+        IntentFilter intentFiltert = new IntentFilter(Intent.ACTION_MANAGE_NETWORK_USAGE);
+        registerReceiver(phoneReceiver,intentFilter);
 
         editText = findViewById(R.id.salesmanBox);
         Button upload = findViewById(R.id.but_id);

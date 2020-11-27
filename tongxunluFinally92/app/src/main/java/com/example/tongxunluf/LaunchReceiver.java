@@ -1,4 +1,4 @@
-package com.example.tongxunluf.receiver;
+package com.example.tongxunluf;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

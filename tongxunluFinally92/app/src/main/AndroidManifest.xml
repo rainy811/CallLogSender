@@ -32,8 +32,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver
-            android:name=".receiver.PhoneReceiver"
+            android:name=".PhoneReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="1000">
@@ -42,7 +43,7 @@
            </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.LaunchReceiver">
+        <receiver android:name=".LaunchReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>

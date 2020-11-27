@@ -1,4 +1,4 @@
-package com.example.tongxunluf.receiver;
+package com.example.tongxunluf;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -23,7 +23,6 @@ public class PhoneReceiver extends BroadcastReceiver {
             mIncomingFlag = false;
             String phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
             //Toast.makeText(context,"打出去了！！！",Toast.LENGTH_SHORT).show();
-            context.startService(requestIn);
         } else{
             // 如果是来电
             TelephonyManager tManager = (TelephonyManager) context
