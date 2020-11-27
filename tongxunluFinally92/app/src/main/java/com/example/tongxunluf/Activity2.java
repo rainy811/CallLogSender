@@ -47,11 +47,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import android.support.v4.content.ContextCompat;
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
-
-
 public class Activity2 extends AppCompatActivity {
 
     private String[] FileExist;
@@ -61,9 +56,7 @@ public class Activity2 extends AppCompatActivity {
             Manifest.permission.WRITE_CALL_LOG,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
             Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.PROCESS_OUTGOING_CALLS,
             Manifest.permission.CALL_PHONE,
@@ -147,89 +140,70 @@ public class Activity2 extends AppCompatActivity {
         //Alarm();
         addCallLOg();
         B1.setOnClickListener(new View.OnClickListener() {
-                                  @RequiresApi(api = Build.VERSION_CODES.M)
-                                  public void onClick(View view) {
-                                      switch (view.getId()) {
-                                          case R.id.but_id:
-                                              //T.cancel();
-                                              b = et.getText().toString();
-                                              file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
-                                              if (file2.exists()) {
-                                                  file2.delete();
-                                              }
-                                              file = new File(local_file);
-                                              FileExist = file.list();
-                                              if (FileExist != null) {
-                                                  for (int i = 0; i < FileExist.length; i++) {
-                                                      File file3 = new File(local_file + "/" + FileExist[i]);
-                                                      file3.delete();
-                                                  }
-                                              }
-                                              try {
-                                                  getContentCallLog();
-                                              } catch (IOException e) {
-                                                  e.printStackTrace();
-                                              } catch (NoSuchMethodException e) {
-                                                  e.printStackTrace();
-                                              }
-                                              String oo = number2 + "";
-                                              if (n2 / 60 != 0) {
-                                                  fenzhong = n2 / 60;
-                                                  if (fenzhong / 60 != 0) {
-                                                      xiaoshi = fenzhong / 60;
-                                                      fenzhong = fenzhong - xiaoshi * 60;
-                                                      n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
-                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
-                                                  } else if (fenzhong / 60 == 0) {
-                                                      n2 = n2 - fenzhong * 60;
-                                                      file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
-                                                  }
-                                              } else {
-                                                  file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
-                                              }
-                                              number2 = 0;
-                                              new Thread() {
-                                                  @Override
-                                                  public void run() {
-                                                      shangchaun();
-                                                  }
-                                              }.start();
-                                              break;
-                                          default:
-                                              break;
-                                      }
-                                  }
-                              }
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.but_id:
+                        //T.cancel();
+                        b = et.getText().toString();
+                        file2 = new File(local_file + "/" + b.replace("/", "-") + ".csv");
+                        if (file2.exists()) {
+                          file2.delete();
+                        }
+                        file = new File(local_file);
+                        FileExist = file.list();
+                        if (FileExist != null) {
+                            for (int i = 0; i < FileExist.length; i++) {
+                                File file3 = new File(local_file + "/" + FileExist[i]);
+                                file3.delete();
+                            }
+                        }
+                        try {
+                          getContentCallLog();
+                        } catch (IOException e) {
+                          e.printStackTrace();
+                        } catch (NoSuchMethodException e) {
+                          e.printStackTrace();
+                        }
+                        String oo = number2 + "";
+                        if (n2 / 60 != 0) {
+                          fenzhong = n2 / 60;
+                          if (fenzhong / 60 != 0) {
+                              xiaoshi = fenzhong / 60;
+                              fenzhong = fenzhong - xiaoshi * 60;
+                              n2 = n2 - fenzhong * 60 - xiaoshi * 60 * 60;
+                              file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + xiaoshi + "h" + fenzhong + "m" + n2 + "s" + ".csv"));
+                          } else if (fenzhong / 60 == 0) {
+                              n2 = n2 - fenzhong * 60;
+                              file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + fenzhong + "m" + n2 + "s" + ".csv"));
+                          }
+                        } else {
+                          file2.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/TXT" + "/" + b.replace("/", "-") + "  " + Name2 + "  通话数量：" + oo + "  通话时长" + n2 + "s" + ".csv"));
+                        }
+                        number2 = 0;
+                        new Thread() {
+                          @Override
+                          public void run() {
+                              shangchaun();
+                          }
+                        }.start();
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
         );
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String IMEI() {
-        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        //@SuppressLint("MissingPermission") String imei = manager.getDeviceId();
-        @SuppressLint("MissingPermission") String imei = manager.getImei();
-        SoapObject soapObject2;
-        soapObject2 = new SoapObject(nameSpace, Mymethod2);
-        soapObject2.addProperty("imei", imei);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.bodyOut = soapObject2;
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(soapObject2);
-        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
-        httpTransportSE1.debug = true;
-        String name = "未搜索到销售名，请查看或更新IMEI表格";
-        try {
-            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
-            SoapObject object = (SoapObject) envelope.bodyIn;
-            name = object.getProperty(0).toString();
-        } catch (HttpResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+    public String getName(){
+        String name = "Henry";
+
         return name;
+    }
+
+    public String IMEI() {
+        return getName();
     }
 
     private void addCallLOg() {  //添加通话记录

@@ -1,4 +1,4 @@
 <resources>
     <!--string name="app_name">发送通话记录</string-->
-    <string name="app_name">发送通话记录</string>
+    <string name="app_name">CallLogSender</string>
 </resources>

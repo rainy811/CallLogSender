@@ -158,32 +158,15 @@ public class RespenseService extends Service {
         };
         T.schedule(TT,1000);
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String IMEI() {
-        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String imei = manager.getImei();
-        SoapObject soapObject2;
-        soapObject2 = new SoapObject(nameSpace, Mymethod2);
-        soapObject2.addProperty("imei", imei);
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.bodyOut = soapObject2;
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(soapObject2);
-        HttpTransportSE httpTransportSE1 = new HttpTransportSE(Myurl);
-        httpTransportSE1.debug = true;
-        String name = "未搜索到销售名，请查看或更新IMEI表格";
-        try {
-            httpTransportSE1.call(nameSpace + Mymethod2, envelope);
-            SoapObject object = (SoapObject) envelope.bodyIn;
-            name = object.getProperty(0).toString();
-        } catch (HttpResponseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+
+    public String getName(){
+        String name = "Henry";
+
         return name;
+    }
+
+    public String IMEI() {
+        return getName();
     }
 
     private void addCallLOg() {  //添加通话记录
