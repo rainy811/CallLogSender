@@ -25,6 +25,7 @@ import androidx.work.WorkManager;
 
 import com.example.tongxunluf.receiver.FlyModeReceiver;
 import com.example.tongxunluf.receiver.PhoneReceiver;
+import com.example.tongxunluf.service.AlarmService;
 import com.example.tongxunluf.utils.SalesNameUtil;
 import com.example.tongxunluf.upload.Upload;
 import com.example.tongxunluf.worker.SendCallLogWorker;
@@ -135,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
         editText.setFocusableInTouchMode(false);
     }
     public void startWork(View view){
+        // AlarmManager 循环发送
+        Intent intent=new Intent(this, AlarmService.class);
+        startService(intent);
+
         PeriodicWorkRequest periodicWorkRequest;
         periodicWorkRequest = new PeriodicWorkRequest.Builder(SendCallLogWorker.class,15, TimeUnit.MINUTES).build();
         WorkManager.getInstance(MainActivity.this).enqueue(periodicWorkRequest);
