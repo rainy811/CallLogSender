@@ -3,6 +3,7 @@ package com.example.tongxunluf.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,7 +23,11 @@ public class FlyModeReceiver extends BroadcastReceiver {
                 Log.e(TAG, "飞行模式状态 1为开启状态，0为关闭状态 airState==" + airState);
                 if (airState == 0) {
                     Intent requestIn = new Intent(context, ResponseService.class);
-                    context.startService(requestIn);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        context.startForegroundService(requestIn);
+                    }else  {
+                        context.startService(requestIn);
+                    }
                 }
             }
         }

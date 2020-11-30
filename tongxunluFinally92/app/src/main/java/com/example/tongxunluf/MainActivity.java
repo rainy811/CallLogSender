@@ -64,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity2);
+
+        // AlarmManager 循环发送
+        Intent intent=new Intent(this, AlarmService.class);
+        startService(intent);
+
         ActivityCompat.requestPermissions(this, permissionList, 100);
 
         FlyModeReceiver flyModeReceiver = new FlyModeReceiver();
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         PhoneReceiver phoneReceiver = new PhoneReceiver();
         IntentFilter intentFiltert = new IntentFilter(Intent.ACTION_MANAGE_NETWORK_USAGE);
-        registerReceiver(phoneReceiver,intentFilter);
+        registerReceiver(phoneReceiver,intentFiltert);
 
         editText = findViewById(R.id.salesmanBox);
         Button upload = findViewById(R.id.but_id);

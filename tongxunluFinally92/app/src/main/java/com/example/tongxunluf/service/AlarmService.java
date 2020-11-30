@@ -16,6 +16,7 @@ import com.example.tongxunluf.upload.Upload;
 public class AlarmService extends Service {
 
     private static final int ONE_Miniute=60*1000;
+    private static final int QUAINZ_Miniute=15*60*1000;
     private static final int PENDING_REQUEST=0;
 
     public AlarmService() {
@@ -38,13 +39,15 @@ public class AlarmService extends Service {
 
         //通过AlarmManager定时启动广播
         AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
+        long periode = QUAINZ_Miniute;
         long triggerAtTime= SystemClock.elapsedRealtime()+ONE_Miniute;//从开机到现在的毫秒数（手机睡眠(sleep)的时间也包括在内
         Intent i=new Intent(this, AlarmReceive.class);
         PendingIntent pIntent=PendingIntent.getBroadcast(this,PENDING_REQUEST,i,PENDING_REQUEST);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pIntent);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,periode,pIntent);
 
         return super.onStartCommand(intent, flags, startId);
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
