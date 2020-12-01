@@ -12,10 +12,6 @@ public class AlarmReceive extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //循环启动Service
         Intent requestIn = new Intent(context, AlarmService.class);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            context.startForegroundService(requestIn);
-        }else  {
-            context.startService(requestIn);
-        }
+        context.startService(requestIn);
     }
 }
